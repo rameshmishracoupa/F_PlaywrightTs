@@ -16,4 +16,9 @@ export class ActionHelper{
         await page.mouse.up(); // Release mouse button
         await page.waitForTimeout(5000);
       }
+
+      static async dragAndDropSourceToDestElement(page: Page, sourceElement: Locator, destinationElement: Locator){
+          await sourceElement.dragTo(destinationElement);
+
+      }
 }
