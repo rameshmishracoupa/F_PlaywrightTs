@@ -24,4 +24,23 @@ export class WaitUtils {
         await expect(element).toContainText(text);
         console.log(`✅ Text "${text}" found in element: ${selector}`);
     }
+
+    async waitUntilDisappear(page: Page, selector: string, timeout: number = 20000): Promise<void> {
+        await page.locator(selector).waitFor({
+            state: "hidden", // Element becomes hidden
+            timeout
+        });
+    
+        console.log(`✅ Element ${selector} has disappeared`);
+    }
+    async isVisibleElement(page: Page, selector: string, timeout: number = 5000): Promise<boolean> {
+        try {
+            await page.locator(selector).waitFor({ state: "visible", timeout });
+            return true; // Element is visible within the timeout
+        } catch (error) {
+            return false; // Timeout exceeded, element is not visible
+        }
+    }
+    
+    
 }
