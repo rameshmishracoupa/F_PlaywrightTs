@@ -1,0 +1,24 @@
+# Use the official Playwright base image
+# Use latest version
+FROM mcr.microsoft.com/playwright:v1.42.0
+
+# Set working directory inside container
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies (Playwright & project dependencies)
+RUN npm install
+
+# Copy the rest of the project files
+COPY . .
+
+# Install Playwright browsers
+RUN npx playwright install --with-deps
+
+# Set environment variable for CI mode (optional)
+ENV CI=true
+
+# Run Playwright test
+CMD ["npx", "playwright", "test"]
