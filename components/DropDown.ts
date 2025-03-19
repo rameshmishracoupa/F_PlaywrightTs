@@ -1,7 +1,8 @@
-import { Page } from '@playwright/test';
+import { BrowserContext, Page } from '@playwright/test';
+import { BasePage } from '../core/BasePage';
 
-export class DropDown {
-  private page: Page;
+
+export class DropDown extends BasePage {
   private openSelector: string;
   private optionSelector: string;
 
@@ -10,9 +11,11 @@ export class DropDown {
    * @param openSelector - Selector for the dropdown element that opens the dropdown.
    * @param optionSelector - Selector for the dropdown options container.
    */
-  constructor(page: Page, openSelector: string, optionSelector: string) {
-    this.page = page;
+  constructor( openSelector: string, optionSelector: string) {
+    super(BasePage.page);
+    
     this.openSelector = openSelector;
+
     this.optionSelector = optionSelector;
   }
 
@@ -21,7 +24,7 @@ export class DropDown {
    */
   async open(): Promise<void> {
     console.log(`Opening dropdown using selector: ${this.openSelector}`);
-    await this.page.click(this.openSelector);
+    await this.pageInstance.click(this.openSelector);
     console.log('Dropdown opened.');
   }
 
@@ -33,7 +36,7 @@ export class DropDown {
     console.log(`Selecting dropdown value: "${value}"`);
     // Locate the option that has the provided text
     console.log(`Selecting dropdown value: "${this.optionSelector}"`);
-    const option = this.page.locator(this.optionSelector);
+    const option = this.pageInstance.locator(this.optionSelector);
 
      await option.click();
     console.log(`Dropdown value "${value}" selected.`);

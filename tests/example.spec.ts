@@ -1,70 +1,50 @@
-import { test, expect, type Page, Locator } from '@playwright/test';
-import { DropDown } from '../util/DropDown';
+
+import { DropDown } from '../components/DropDown';
 import { ActionHelper } from '../ActionHelper/ActionHelper';
-import { WaitUtils } from '../util/WaitUtils';
+import { WaitUtils } from '../components/WaitUtils';
+import {test} from "../core/BaseTest"
+import { ActionType } from '../pages/dataflowpage/DataFlowBasePage';
 
-test('First Test', async({browser}) => {
-    const context = await browser.newContext();
-    const page = await context.newPage();
-    // await page.goto('https://qa.llama.ai');
-    // console.log(await page.title());
-});
+// test('First Test', async({browser}) => {
+//     const context = await browser.newContext();
+//     const page = await context.newPage();
+//     // await page.goto('https://qa.llama.ai');
+//     // console.log(await page.title());
+// });
 
-test.only('Second Test', async({page}) => {
+test.only('Second Test', async({page,login,dataFlowBasePage,createTableActionPage}) => {
   // const context = await browser.newContext();
   // const page = await context.newPage();
-  const dialogBoxLocator = "[data-testid='UpgradedAssetDetectedModal_OKButton']";
-  await page.goto('https://qa.llama.ai');
-  await page.locator("[id='input-user-name']").fill("ramesh.mishra@cou.co");
-  await page.locator("[type='submit']").click();
-  await page.locator("[id='input-password']").fill("Llama@12345");
-  await page.locator("[type='submit']").click();
-  await page.locator("[data-testid='AppSectionsNavigator_dataFlows']").click();
-  //
-  await page.locator("tr.dx-datagrid-filter-row td:first-child [aria-label='Search box']").hover();
-  await page.locator("//span[contains(text(),'Equals')]").click();
-  
-  var dataFlowName = "fdsaf";
-  await page.waitForTimeout(5000);
-  await page.locator("tr.dx-datagrid-filter-row td:first-child input").fill(dataFlowName);
-  
-  await page.locator(`//a[@title='${dataFlowName}']`).click();
-  //Revert to published
+  var connectionName ="conn";
+  const dataFlowName="Insertdata";
   const waitUtils = new WaitUtils(page);
-  if(await waitUtils.isVisibleElement(page,dialogBoxLocator,5000)){
-    await page.locator(dialogBoxLocator).click();
-  }
-  await page.locator("[data-testid='CanvasActionBar_MoreMenuButton']").click();
-  const element = await page.locator("[data-testid='CanvasActionBar_revertToPublished']");
-  const ariaDisabled= await element.getAttribute("aria-disabled");
-  if(ariaDisabled==='false'){
-    await element.click();
-    await page.locator("[data-testid='RevertDraftModal_RevertButton']").click();
-    
-  }
-  else{
-    await page.locator("h3").click();
-  }
-  if(await waitUtils.isVisibleElement(page,dialogBoxLocator,5000)){
-    await page.locator(dialogBoxLocator).click();
-  }
+  await login("rameshuser2");
+  const dialogBoxLocator = "[data-testid='UpgradedAssetDetectedModal_OKButton']";
+  await page.locator("[data-testid='AppSectionsNavigator_dataFlows']").click();
 
-  const creatTableActionElement = page.locator("[title='Create Table']");
-  await ActionHelper.dragAndDrop(page, creatTableActionElement, -450);
+  dataFlowBasePage.EnterDataFlowNameAndOpenIt(dataFlowName);
+  //Revert to published
   
-  var connectionName ="fdsa";
+  dataFlowBasePage.CloseDialogBoxIfAppear();
+  dataFlowBasePage.RevertToPublished();
+  dataFlowBasePage.CloseDialogBoxIfAppear();
+
   
-  const connection = new DropDown(page, "div.Selectors__keyEventWrapper__CSu55", `[data-testid='CreateTableActionProperties_ConnectionDropdown_Menu'] [title='${connectionName}'] > span`);
-  
-  await connection.open();
-  
-  await connection.select("fdsa");
-  
+   dataFlowBasePage.DragAndDropActionByName(ActionType.CREATE_TABLE, -450);
+
+  createTableActionPage.OpenAndSelectConnectionName(connectionName);
+
+ 
   //select table
-  await page.locator("[data-testid='CreateTableActionProperties_TableNameInput_Input']").fill("tableName");
-  await page.locator("[data-testid='CreateTableActionProperties_ConfigureTableButton']").click();
-  await page.locator("[data-testid='ConfigureTable_AddColumnButton']").click();
-  await page.locator("[data-testid='ConfigureTable_SaveButton']").click();
+  const tableName = "tableName";
+  createTableActionPage.EnterTableName(tableName);
+  createTableActionPage.OpenConfigurationPage();
+  await waitUtils.isVisibleElement(createTableActionPage.addColumn.toString(),5000);
+  await createTableActionPage.addColumn.click();
+  createTableActionPage.SaveTheConfiguration();
+  // await page.locator("[data-testid='ConfigureTable_AddColumnButton']").click();
+  // await page.locator("[data-testid='ConfigureTable_SaveButton']").click();
+
   await page.locator("[data-testid='CanvasActionBar_SaveButton']").click();
   await waitUtils.waitUntilTextContains("[data-testid='ToastContainerQAId'] span","Data Flow was saved successfully",20000);
   await page.locator("[data-testid='CanvasActionBar_CloseButton']").click();
@@ -72,7 +52,7 @@ test.only('Second Test', async({page}) => {
   const dropTableActionElement = page.locator("[title='Drop Tables']");
   await ActionHelper.dragAndDrop(page, dropTableActionElement, -450);
 
-  await selectFirstActionNode(page);
+  await dataFlowBasePage.selectFirstActionNode();
 await page.locator("[data-testid='CanvasActionBar_SaveButton']").click();
   await waitUtils.waitUntilTextContains("[data-testid='ToastContainerQAId'] span","Data Flow was saved successfully",20000)
   await page.locator("[data-testid='CanvasActionBar_RunButton_MoreOptionsContextMenu']").click();
@@ -82,13 +62,13 @@ await page.locator("[data-testid='CanvasActionBar_SaveButton']").click();
 
   //switch to design page
   await page.locator("//a[contains(text(), 'Design')]").click();
-  await selectSecondActionNode(page);
+  await dataFlowBasePage.selectSecondActionNode();
 
-  const dropconnection = new DropDown(page, "div.Selectors__keyEventWrapper__CSu55", `[data-testid='DropActionProperties_ConnectionDropdown_Menu'] [title='${connectionName}'] > span`);
+  const dropconnection = new DropDown("div.Selectors__keyEventWrapper__CSu55", `[data-testid='DropActionProperties_ConnectionDropdown_Menu'] [title='${connectionName}'] > span`);
   
   await dropconnection.open();
   
-  await dropconnection.select("fdsa");
+  await dropconnection.select(connectionName);
  await page.locator("[data-testid='DropActionProperties_ConfigureButton']").click();
   const deletetable= "tableName";
   const sourceele= page.locator(`[data-testid^='dbo.'][title='${deletetable}']`);
@@ -97,8 +77,10 @@ await page.locator("[data-testid='CanvasActionBar_SaveButton']").click();
  await page.locator("[data-testid='ConfigureDropTablesModal_SaveButton']").click();
 
  await page.waitForTimeout(10000);
+ await waitUtils.waitUntilDisappear("[data-testid='ToastContainerQAId'] span")
   await page.locator("[data-testid='CanvasActionBar_SaveButton']").click();
   
+  //
   await waitUtils.waitUntilTextContains("[data-testid='ToastContainerQAId'] span","Data Flow was saved successfully",20000);
 
  await page.locator("[data-testid='CanvasActionBar_RunButton_MoreOptionsContextMenu']").click();
@@ -116,23 +98,9 @@ await page.locator("[data-testid='CanvasActionBar_SaveButton']").click();
 
 });
 
-async function selectFirstActionNode(page: Page): Promise<void> {
-  await page.evaluate(() => {
-      const d = (window as any).go.Diagram.fromDiv("box");
-      const createTableNodeKey = d.model.nodeDataArray[1].key;
-      const node = d.findNodeForKey(createTableNodeKey);
-      d.select(node);
-  });
-}
 
-async function selectSecondActionNode(page: Page): Promise<void> {
-  await page.evaluate(() => {
-      const d = (window as any).go.Diagram.fromDiv("box");
-      const createTableNodeKey = d.model.nodeDataArray[2].key;
-      const node = d.findNodeForKey(createTableNodeKey);
-      d.select(node);
-  });
-}
+
+
 
 
 

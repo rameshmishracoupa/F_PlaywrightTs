@@ -1,0 +1,15 @@
+{
+    "elements": {
+      "search_type_button": "tr.dx-datagrid-filter-row td:first-child [aria-label='Search box']",
+      "serach_type_select": "//span[contains(text(),'Equals')]",
+      "search_box_input_field": "tr.dx-datagrid-filter-row td:first-child input",
+      "select_dataflow_by_name": "//a[contains(text(), \"${dataFlowName}\")]",
+      "dialog_box_locator": "[data-testid='UpgradedAssetDetectedModal_OKButton']",
+      "more_menu_button": "[data-testid='CanvasActionBar_MoreMenuButton']",
+      "revert_to_published": "[data-testid='CanvasActionBar_revertToPublished']",
+      "revert_button": "[data-testid='RevertDraftModal_RevertButton']",
+      "dataflow_label": "h3",
+      "action_type": "[title='${actionType}']"
+    },
+    "sections": {}
+  }
