@@ -13,6 +13,7 @@ export class TextBox extends BasePage {
 
 
       async EnterText(value: string): Promise<void>{
+        console.log(`���️ Entering Text with this value: ${value}`);
         await this.pageInstance.locator(this.textInputSelector).fill(value);
       }
 }

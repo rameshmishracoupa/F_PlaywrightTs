@@ -6,6 +6,7 @@ import { Page } from "@playwright/test";
 import {TextBox} from '../../components/TextBox';
 import {Button} from '../../components/Button';
 import { DropDown } from '../../components/DropDown';
+import * as  DataFlowBaseLocators  from "../../locator/DataFlowBaseLocators.json";
 
 export class CreateTableActionPage extends BasePage {
     waitUtils: WaitUtils;
@@ -44,6 +45,7 @@ export class CreateTableActionPage extends BasePage {
 
     async SaveTheConfiguration(): Promise<void>{
         this.saveConfiguration.click();
+        await this.waitUtils.isVisibleElement(DataFlowBaseLocators.elements.dataflow_label);
     }
         
     

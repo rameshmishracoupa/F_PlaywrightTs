@@ -1,5 +1,5 @@
 export const config = {
-    env: process.env.ENV || "dev", // Default to QA
+    env: process.env.ENV || "qa", // Default to QA
     baseUrls: {
       qa: "https://qa.llama.ai",
       dev: "https://dev.llama.ai",
