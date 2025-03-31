@@ -5,13 +5,15 @@ import { WaitUtils } from '../../components/WaitUtils';
 import {test} from "../../core/BaseTest"
 import { ActionType } from '../../pages/dataflowpage/DataFlowBasePage';
 import { Page, expect, Locator } from "@playwright/test";
+import { LoginPage } from '../../pages/LoginPage';
 
 
 
 
-test.only('First Test', async({page, login, context}) => {
+test.only('First Test', async({page, pages,context}) => {
+    const loginPage = pages.getPage(LoginPage);
     const waitUtils = new WaitUtils(page);
-    await login("DeployPlanner1");
+    await loginPage.login("DeployPlanner1");
     await page.locator("//div[@data-testid='AppSwitcher_QAId']").click();
     
     const [newPage] = await Promise.all([

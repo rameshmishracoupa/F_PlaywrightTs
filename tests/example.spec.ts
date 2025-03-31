@@ -3,16 +3,25 @@ import { DropDown } from '../components/DropDown';
 import { ActionHelper } from '../ActionHelper/ActionHelper';
 import { WaitUtils } from '../components/WaitUtils';
 import {test} from "../core/BaseTest"
-import { ActionType } from '../pages/dataflowpage/DataFlowBasePage';
+import { ActionType, DataFlowBasePage } from '../pages/dataflowpage/DataFlowBasePage';
+import { LoginPage } from '../pages/LoginPage';
+import { HomePage } from '../pages/HomePage';
+import { CreateTableActionPage } from '../pages/dataflowpage/CreateTableActionPage';
+import { DropTableActionPage } from '../pages/dataflowpage/DropTableActionPage';
 
 
-test.only('Second Test', async({page,login,dataFlowBasePage,createTableActionPage,dropTableActionPage,homePage}) => {
+test.only('Second Test', async({pages,page}) => {
+  const loginPage = pages.getPage(LoginPage);
+    const homePage = pages.getPage(HomePage);
+    const dataFlowBasePage = pages.getPage(DataFlowBasePage);
+    const createTableActionPage = pages.getPage(CreateTableActionPage);
+    const dropTableActionPage = pages.getPage(DropTableActionPage);
   // const context = await browser.newContext();
   // const page = await context.newPage();
   var connectionName ="conn";
   const dataFlowName="Insertdata";
   const waitUtils = new WaitUtils(page);
-  await login("rameshuser2");
+  await loginPage.login("rameshuser2");
   
   await homePage.navigateToDataFlow();
 

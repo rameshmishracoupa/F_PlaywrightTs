@@ -1,45 +1,13 @@
 import { test as base } from "@playwright/test";
-import { DataFlowBasePage } from "../pages/dataflowpage/DataFlowBasePage";
-import { CreateTableActionPage } from "../pages/dataflowpage/CreateTableActionPage";
-import { DropTableActionPage } from "../pages/dataflowpage/DropTableActionPage";
+import { PageFactory } from "../core/PageFactory";
 import { LoginPage } from "../pages/LoginPage";
-import { InsertActionPage } from "../pages/dataflowpage/InsertActionPage";
-import { HomePage } from "../pages/HomePage";
 
-export const test = base.extend<{
-    loginPage: LoginPage;
-    dataFlowBasePage: DataFlowBasePage;
-    createTableActionPage: CreateTableActionPage;
-    dropTableActionPage: DropTableActionPage;
-    insertActionPage: InsertActionPage;
-    homePage:HomePage;
-    login: (username: string) => Promise<void>;
-}>({
-    loginPage: async ({ page }, use) => {
-        await use(new LoginPage(page));
-    },
-    dataFlowBasePage: async ({ page }, use) => {
-        await use(new DataFlowBasePage(page));
-    },
-    createTableActionPage: async ({ page }, use) => {
-        await use(new CreateTableActionPage(page));
-    },
-    dropTableActionPage: async ({page}, use)=>{
-        await use(new DropTableActionPage(page));
-    },
-    insertActionPage: async ({page}, use)=>{
-        await use(new InsertActionPage(page));
-    },
-    homePage: async ({page}, use)=>{
-        await use(new HomePage(page));
-    },
-    
-    login: async ({ loginPage }, use) => {
-        await use(async (username: string) => {
-            await loginPage.navigateTo();
-            await loginPage.login(username);
-        });
-    }
+export const test = base.extend<{ pages: PageFactory }>({
+  pages: async ({ page }, use) => {
+    const pageFactory = new PageFactory(page);
+    await pageFactory.getPage(LoginPage).navigateTo(); // Ensure navigation before each test
+    await use(pageFactory);
+  },
 });
 
 export { expect } from "@playwright/test";
