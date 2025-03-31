@@ -9,7 +9,13 @@
       "revert_to_published": "[data-testid='CanvasActionBar_revertToPublished']",
       "revert_button": "[data-testid='RevertDraftModal_RevertButton']",
       "dataflow_label": "h3",
-      "action_type": "[title='${actionType}']"
+      "action_type": "[title='${actionType}']",
+      "save_button": "[data-testid='CanvasActionBar_SaveButton']",
+      "toast_message": "[data-testid='ToastContainerQAId'] span",
+      "close_button": "[data-testid='CanvasActionBar_CloseButton']",
+      "run_button_moremenu": "[data-testid='CanvasActionBar_RunButton_MoreOptionsContextMenu']",
+      "run_all_selected_button": "[data-testid='CanvasActionBar_RunButton_RunAllSelectedButton']",
+      "design_page": "//a[contains(text(), 'Design')]"
     },
     "sections": {}
   }

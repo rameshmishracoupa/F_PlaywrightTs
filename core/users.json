@@ -8,6 +8,16 @@
       "user": "rameshuser2",
       "email": "ramesh.mishra_admin@coupa.com",
       "password": "Llama@12345"
+    },
+    {
+      "user": "DeployPlanner1",
+      "email": "planner1@platformsmoketest.com",
+      "password": "PlatSmokeLLama123"
+    },
+    {
+      "user": "RecipeBuilderAdvanced",
+      "email": "recipe_builder@mycompany.com",
+      "password": "Wysiwyg123!"
     }
   ]
   
