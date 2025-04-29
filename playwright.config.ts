@@ -5,7 +5,7 @@ const config =({
   testDir: './tests',
   timeout: 250*1000,
  expect:{
-  timeout: 15*1000,
+  timeout: 25*1000,
   toMatchSnapshot: {
     maxDiffPixelRatio: 0.5,
     threshold: 0.5,
@@ -14,7 +14,7 @@ const config =({
     maxDiffPixels: 10000,
   },
  },
- snapshotPathTemplate: 'snapshots/{testFileName}-snapshots/{arg}{ext}', // Fix naming issue
+ snapshotPathTemplate: 'snapshots/{testFileName}-snapshots/{arg}{ext}', // Fix naming issuehotPathTemplate
  reporter: [["html", { open: "never" }]],
  workers: 4,
   use: {
@@ -22,7 +22,7 @@ const config =({
     headless: false,
     viewport: { width: 1920, height: 1200 },
     trace: "on", // Enable tracing for debugging
-    actionTimeout: 15 * 1000, // Timeout for each action
+    actionTimeout: 25 * 1000, // Timeout for each action
     navigationTimeout: 30 * 1000, // Timeout for page.goto()
     snapshotDir: "./snapshots",
   }

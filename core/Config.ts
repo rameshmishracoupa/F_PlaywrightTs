@@ -3,7 +3,7 @@ export const config = {
     baseUrls: {
       qa: "https://qa.llama.ai",
       dev: "https://dev.llama.ai",
-      staging: "https://staging.llama.a",
+      staging: "https://staging.llama.ai",
     },
     get baseUrl() {
       return this.baseUrls[this.env];
